@@ -1,14 +1,11 @@
-import 'package:dartz/dartz.dart';
-import 'package:mobile_front_end/core/error/failures.dart';
-import 'package:mobile_front_end/features/patients/domain/entities/patient.dart';
 import 'package:mobile_front_end/features/patients/domain/repositories/patients_repository.dart';
 
-class GetAllPatientsUsescase {
+class GetAllPatientsUsecase {
   final PatientRepository repository;
 
-  GetAllPatientsUsescase(this.repository);
+  GetAllPatientsUsecase(this.repository);
 
-  Future<Either<Failure, List<Patient>>> call() async {
+   call() async {
     return await repository.getAllPatients();
   }
 }

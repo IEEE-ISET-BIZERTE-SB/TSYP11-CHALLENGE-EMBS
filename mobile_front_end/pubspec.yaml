@@ -19,8 +19,8 @@ dependencies:
 
   #firebase
   firebase_core: ^2.24.0
-  firebase_database: ^10.3.6
-
+  cloud_firestore: ^4.13.3
+  
   # Bloc for state management
   flutter_bloc: ^8.0.1
 

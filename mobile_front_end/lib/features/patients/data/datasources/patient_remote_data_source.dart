@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:mobile_front_end/core/strings/constants.dart';
+
 import '../../../../core/exceptions/exceptions.dart';
 import '../models/patient_model.dart';
 import 'package:dartz/dartz.dart';
@@ -13,7 +15,6 @@ abstract class PatientRemoteDataSource {
   Future<Unit> addPatient(PatientModel patientModel);
 }
 
-const BASE_URL = "https://";
 
 class PatientRemoteDataSourceImpl implements PatientRemoteDataSource {
   final http.Client client;
@@ -67,7 +68,6 @@ class PatientRemoteDataSourceImpl implements PatientRemoteDataSource {
       "lastName": patientModel.lastName,
       "room": patientModel.room,
       "bed": patientModel.bed,
-      "photo": patientModel.photo,
     };
 
     final response =
@@ -103,7 +103,6 @@ class PatientRemoteDataSourceImpl implements PatientRemoteDataSource {
       "lastName": PatientModel.lastName,
       "room": PatientModel.room,
       "bed": PatientModel.bed,
-      "photo": PatientModel.photo,
     };
 
     final response = await client.patch(

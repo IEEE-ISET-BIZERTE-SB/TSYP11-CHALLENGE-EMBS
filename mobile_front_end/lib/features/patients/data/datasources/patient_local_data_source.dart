@@ -13,11 +13,11 @@ abstract class PatientLocalDataSource {
 
 const CACHED_PATIENTS = "CACHED_PATIENTS";
 
-class PostLocalDataSourceImpl implements PatientLocalDataSource {
+class PatientLocalDataSourceImpl implements PatientLocalDataSource {
 
   final SharedPreferences sharedPreferences;
 
-  PostLocalDataSourceImpl({
+  PatientLocalDataSourceImpl ({
     required this.sharedPreferences
   });
 

@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:mobile_front_end/core/error/failures.dart';
+import 'package:mobile_front_end/core/network/network_info.dart';
 import 'package:mobile_front_end/features/patients/data/datasources/patient_local_data_source.dart';
 import 'package:mobile_front_end/features/patients/data/datasources/patient_remote_data_source.dart';
 import 'package:mobile_front_end/features/patients/domain/entities/patient.dart';
@@ -12,7 +13,8 @@ class PatientRepositoryImpl implements PatientRepository {
 
   PatientRepositoryImpl({
     required this.remoteDataSource,
-    required this.localDataSource
+    required this.localDataSource, 
+    required NetworkInfo networkInfo
   });
 
 
