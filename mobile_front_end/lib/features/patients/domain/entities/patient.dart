@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class Patient extends Equatable {
+  
   final int? id;
   final String matricule;
   final String firstName;
@@ -20,5 +21,5 @@ class Patient extends Equatable {
     });
 
   @override
-  List<Object?> get props => [id, matricule, firstName, lastName, room, bed];
+  List<Object?> get props => [id, matricule, firstName, lastName, room, bed, photo];
 }

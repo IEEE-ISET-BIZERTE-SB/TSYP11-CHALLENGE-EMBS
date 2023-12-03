@@ -4,10 +4,10 @@ import 'package:mobile_front_end/features/patients/domain/entities/patient.dart'
 
 abstract class PatientRepository {
 
-  Future<Either<Failure, Unit>> addPatient();
-  Future<Either<Failure, Unit>> updatePatient();
-  Future<Either<Failure, Unit>> deletePatient();
-  Future<Either<Failure, Patient>> getOnePatient();
   Future<Either<Failure, List<Patient>>> getAllPatients();
+  Future<Either<Failure, Patient>> getOnePatient(int id);
+  Future<Either<Failure, Unit>> addPatient(Patient patient);
+  Future<Either<Failure, Unit>> updatePatient(Patient patient);
+  Future<Either<Failure, Unit>> deletePatient(int id);
 
 }
