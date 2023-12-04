@@ -26,7 +26,7 @@ class UpdatePatientEvent extends AddDeleteUpdatePatientEvent {
 }
 
 class DeletePatientEvent extends AddDeleteUpdatePatientEvent {
-  final int patientId;
+  final String patientId;
 
   const DeletePatientEvent({required this.patientId});
 

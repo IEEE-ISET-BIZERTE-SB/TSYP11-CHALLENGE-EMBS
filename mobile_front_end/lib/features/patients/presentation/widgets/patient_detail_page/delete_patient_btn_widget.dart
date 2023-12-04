@@ -8,7 +8,7 @@ import '../../pages/patients_page.dart';
 import 'delete_dialog_widget.dart';
 
 class DeletePatientBtnWidget extends StatelessWidget {
-  final int patientId;
+  final String patientId;
   const DeletePatientBtnWidget({
     Key? key,
     required this.patientId,
@@ -28,7 +28,7 @@ class DeletePatientBtnWidget extends StatelessWidget {
     );
   }
 
-  void deleteDialog(BuildContext context, int patientId) {
+  void deleteDialog(BuildContext context, String patientId) {
     showDialog(
         context: context,
         builder: (context) {

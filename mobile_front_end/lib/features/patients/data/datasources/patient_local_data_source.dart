@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dartz/dartz.dart';
+import 'package:mobile_front_end/core/strings/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/exceptions/exceptions.dart';
@@ -10,8 +11,6 @@ abstract class PatientLocalDataSource {
   Future<List<PatientModel>> getCachedPatients();
   Future<Unit> cachePatients(List<PatientModel> patientModels);
 }
-
-const CACHED_PATIENTS = "CACHED_PATIENTS";
 
 class PatientLocalDataSourceImpl implements PatientLocalDataSource {
 

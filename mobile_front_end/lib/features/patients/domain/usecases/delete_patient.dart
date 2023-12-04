@@ -7,7 +7,7 @@ class DeletePatientUsecase {
 
   DeletePatientUsecase(this.repository);
 
-  Future<Either<Failure, Unit>> call(int patientId) async {
+  Future<Either<Failure, Unit>> call(String patientId) async {
     return await repository.deletePatient(patientId);
   }
 }

@@ -4,7 +4,7 @@ class PatientModel extends Patient {
 
   
   const PatientModel({
-    int? id,
+    String? id,
     required String matricule, 
     required String firstName, 
     required String lastName, 

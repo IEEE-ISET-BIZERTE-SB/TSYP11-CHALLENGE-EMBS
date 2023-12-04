@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DeleteDialogWidget extends StatelessWidget {
-  final int patientId;
+  final String patientId;
   const DeleteDialogWidget({
     Key? key,
     required this.patientId,
