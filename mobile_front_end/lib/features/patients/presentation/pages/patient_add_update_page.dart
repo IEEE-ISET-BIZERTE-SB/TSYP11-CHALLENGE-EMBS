@@ -33,7 +33,7 @@ class PatientAddUpdatePage extends StatelessWidget {
   Widget _buildBody() {
     return Center(
       child: Padding(
-          padding: EdgeInsets.all(10),
+          padding: EdgeInsets.all(2),
           child:
               BlocConsumer<AddDeleteUpdatePatientBloc, AddDeleteUpdatePatientState>(
             listener: (context, state) {

@@ -20,11 +20,11 @@ class PatientRepositoryImpl implements PatientRepository {
       required this.localDataSource,
       required this.networkInfo});
   @override
-  Stream<Either<Failure, List<Patient>>> getAllPatients() {
-    if (networkInfo.isConnected == true) {
+  Future<Either<Failure, List<Patient>>> getAllPatients() async {
+    if (await networkInfo.isConnected) {
       try {
-        final remotePatients = remoteDataSource.getAllPatients();
-        // localDataSource.cachePatients(remotePatients);
+        final remotePatients = await remoteDataSource.getAllPatients();
+        localDataSource.cachePatients(remotePatients);
         return Right(remotePatients);
       } on ServerException {
         return Left(ServerFailure());

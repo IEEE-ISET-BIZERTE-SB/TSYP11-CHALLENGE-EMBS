@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mobile_front_end/features/patients/data/datasources/patient_local_data_source.dart';
 import 'package:mobile_front_end/features/patients/data/datasources/patient_remote_data_source.dart';
 import 'package:mobile_front_end/features/patients/data/repositories/patient_repository_impl.dart';
@@ -42,7 +43,7 @@ Future<void> init() async {
 // Datasources
 
   sl.registerLazySingleton<PatientRemoteDataSource>(
-      () => PatientRemoteDataSourceImpl(client: sl()));
+      () => PatientRemoteDataSourceImpl(patientCollection: FirebaseFirestore.instance.collection('patient')));
   sl.registerLazySingleton<PatientLocalDataSource>(
       () => PatientLocalDataSourceImpl(sharedPreferences: sl()));
 

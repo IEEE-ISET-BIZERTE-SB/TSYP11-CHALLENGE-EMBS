@@ -1,16 +1,10 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:mobile_front_end/core/strings/constants.dart';
-
 import '../../../../core/exceptions/exceptions.dart';
 import '../models/patient_model.dart';
 import 'package:dartz/dartz.dart';
-import 'package:http/http.dart' as http;
 
 abstract class PatientRemoteDataSource {
-  Stream<List<PatientModel>> getAllPatients();
-  // Future<PatientModel> getOnePatient(String patientId);
+  Future<List<PatientModel>> getAllPatients();
   Future<Unit> deletePatient(String patientId);
   Future<Unit> updatePatient(PatientModel patientModel);
   Future<Unit> addPatient(PatientModel patientModel);
@@ -18,97 +12,92 @@ abstract class PatientRemoteDataSource {
 
 
 class PatientRemoteDataSourceImpl implements PatientRemoteDataSource {
-final CollectionReference patientCollection = FirebaseFirestore.instance.collection('patient');
+final CollectionReference patientCollection;
+
+  PatientRemoteDataSourceImpl({required this.patientCollection});
 
   @override
-  Stream<List<PatientModel>> getAllPatients() {
-    return patientCollection.snapshots().map(
-      (snapshot) {
-        return snapshot.docs.map(
-          (doc) {
-            final data = doc.data() as dynamic;
-            return PatientModel.fromJson(data);
-          },
-        ).toList();
-      },
+  Future<List<PatientModel>> getAllPatients() async {
+      final snapshot = await patientCollection.get();
+      if (snapshot.docs.isNotEmpty) {
+        final allData = snapshot.docs.map((doc) {
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        data['id'] = doc.id;
+        return data;
+      }).toList();
+        
+      print(allData);
+      final List<PatientModel> patientModels = allData
+      .map<PatientModel>((jsonPostModel) => PatientModel.fromJson(jsonPostModel))
+      .toList();
+
+      return patientModels;
+      } else {
+        throw ServerException();
+      }
+  }
+  
+  @override
+  Future<Unit> addPatient(PatientModel patientModel) async {
+    
+    final body = {
+      "matricule": patientModel.matricule,
+      "firstName": patientModel.firstName,
+      "lastName": patientModel.lastName,
+      "room": patientModel.room,
+      "bed": patientModel.bed,
+    };
+
+    bool response = false;
+    await patientCollection.add(body).then((value) => 
+      response = true
     );
+
+    if (response) {
+      return Future.value(unit);
+    } else {
+      throw ServerException();
+    }
   }
-  
+
   @override
-  Future<Unit> addPatient(PatientModel patientModel) {
-    // TODO: implement addPatient
-    throw UnimplementedError();
+  Future<Unit> deletePatient(String patientId) async {
+    
+    bool response = false;
+    await patientCollection.doc(patientId).delete().then((value) => 
+     response = true
+    );
+
+    if (response) {
+      return Future.value(unit);
+    } else {
+      throw ServerException();
+    }
   }
-  
+
   @override
-  Future<Unit> deletePatient(String patientId) {
-    // TODO: implement deletePatient
-    throw UnimplementedError();
+  Future<Unit> updatePatient(PatientModel PatientModel) async {
+    final patientId = PatientModel.id;
+    final body = {
+      "matricule": PatientModel.matricule,
+      "firstName": PatientModel.firstName,
+      "lastName": PatientModel.lastName,
+      "room": PatientModel.room,
+      "bed": PatientModel.bed,
+    };
+
+    bool response = false;
+    
+    await patientCollection.doc(patientId)
+    .update(body).then((value) => 
+    response = true
+    );
+
+    if (response) {
+      return Future.value(unit);
+    } else {
+      throw ServerException();
+    }
   }
-  
-  @override
-  Future<Unit> updatePatient(PatientModel patientModel) {
-    // TODO: implement updatePatient
-    throw UnimplementedError();
-  }
-
-
-
-  // @override
-  // Future<Unit> addPatient(PatientModel patientModel) async {
-  //   final body = {
-  //     "matricule": patientModel.matricule,
-  //     "firstName": patientModel.firstName,
-  //     "lastName": patientModel.lastName,
-  //     "room": patientModel.room,
-  //     "bed": patientModel.bed,
-  //   };
-
-  //   final response =
-  //       await client.post(Uri.parse("$BASE_URL/patients/"), body: body);
-
-  //   if (response.statusCode == 201) {
-  //     return Future.value(unit);
-  //   } else {
-  //     throw ServerException();
-  //   }
-  // }
-
-  // @override
-  // Future<Unit> deletePatient(String patientId) async {
-  //   final response = await client.delete(
-  //     Uri.parse("$BASE_URL/patients/${patientId.toString()}"),
-  //     headers: {"Content-Type": "application/json"},
-  //   );
-
-  //   if (response.statusCode == 200) {
-  //     return Future.value(unit);
-  //   } else {
-  //     throw ServerException();
-  //   }
-  // }
-
-  // @override
-  // Future<Unit> updatePatient(PatientModel PatientModel) async {
-  //   final patientId = PatientModel.id.toString();
-  //   final body = {
-  //     "matricule": PatientModel.matricule,
-  //     "firstName": PatientModel.firstName,
-  //     "lastName": PatientModel.lastName,
-  //     "room": PatientModel.room,
-  //     "bed": PatientModel.bed,
-  //   };
-
-  //   final response = await client.patch(
-  //     Uri.parse("$BASE_URL/patients/$patientId"),
-  //     body: body,
-  //   );
-
-  //   if (response.statusCode == 200) {
-  //     return Future.value(unit);
-  //   } else {
-  //     throw ServerException();
-  //   }
-  // }
   
 }

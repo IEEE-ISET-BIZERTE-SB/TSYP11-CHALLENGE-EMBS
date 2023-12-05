@@ -10,6 +10,7 @@ import 'text_form_field_widget.dart';
 class FormWidget extends StatefulWidget {
   final bool isUpdatePatient;
   final Patient? patient;
+
   const FormWidget({
     Key? key,
     required this.isUpdatePatient,
@@ -22,35 +23,66 @@ class FormWidget extends StatefulWidget {
 
 class _FormWidgetState extends State<FormWidget> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _firstNameController = TextEditingController();
-  TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _matriculeController = TextEditingController(); // Added
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _roomController = TextEditingController();
+  final TextEditingController _bedController = TextEditingController();
 
   @override
   void initState() {
     if (widget.isUpdatePatient) {
+      _matriculeController.text = widget.patient!.matricule; // Added
       _firstNameController.text = widget.patient!.firstName;
       _lastNameController.text = widget.patient!.lastName;
+      _roomController.text = widget.patient!.room;
+      _bedController.text = widget.patient!.bed;
     }
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Form(
+      return  SingleChildScrollView(
+      child:
+      Form(
       key: _formKey,
       child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            TextFormFieldWidget(
-                name: "First Name", multiLines: false, controller: _firstNameController),
-            TextFormFieldWidget(
-                name: "Last Name", multiLines: true, controller: _lastNameController),
-            FormSubmitBtn(
-                isUpdatePatient: widget.isUpdatePatient,
-                onPressed: validateFormThenUpdateOrAddpatient),
-          ]),
-    );
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          TextFormFieldWidget(
+            name: "Matricule",
+            multiLines: false,
+            controller: _matriculeController,
+          ),
+          TextFormFieldWidget(
+            name: "First Name",
+            multiLines: false,
+            controller: _firstNameController,
+          ),
+          TextFormFieldWidget(
+            name: "Last Name",
+            multiLines: false,
+            controller: _lastNameController,
+          ),
+          TextFormFieldWidget(
+            name: "Room",
+            multiLines: false,
+            controller: _roomController,
+          ),
+          TextFormFieldWidget(
+            name: "Bed",
+            multiLines: false,
+            controller: _bedController,
+          ),
+          FormSubmitBtn(
+            isUpdatePatient: widget.isUpdatePatient,
+            onPressed: validateFormThenUpdateOrAddpatient,
+          ),
+        ],
+      ),
+    ));
   }
 
   void validateFormThenUpdateOrAddpatient() {
@@ -58,14 +90,13 @@ class _FormWidgetState extends State<FormWidget> {
 
     if (isValid) {
       final patient = Patient(
-          id: widget.isUpdatePatient ? widget.patient!.id : null,
-          matricule: "",
-          firstName: _firstNameController.text,
-          lastName: _lastNameController.text, 
-          room: '', 
-          bed: '',
-
-          );
+        id: widget.isUpdatePatient ? widget.patient!.id : null,
+        matricule: _matriculeController.text,
+        firstName: _firstNameController.text,
+        lastName: _lastNameController.text,
+        room: _roomController.text,
+        bed: _bedController.text,
+      );
 
       if (widget.isUpdatePatient) {
         BlocProvider.of<AddDeleteUpdatePatientBloc>(context)

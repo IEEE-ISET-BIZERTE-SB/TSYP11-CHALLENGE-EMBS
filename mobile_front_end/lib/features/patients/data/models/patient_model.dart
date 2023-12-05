@@ -22,13 +22,13 @@ class PatientModel extends Patient {
 
   factory PatientModel.fromJson(Map<String, dynamic> json) {
     return PatientModel(
-       id: json['id'],
-       matricule: json['matricule'], 
-       firstName: json['firstName'],
-       lastName: json['lastName'],
-       room: json['room'],
-       bed: json['bed']
-       );
+        id: json['id'],
+        matricule: json['matricule'], 
+        firstName: json['firstName'],
+        lastName: json['lastName'],
+        room: json['room'],
+        bed: json['bed']
+      );
   }
 
   Map<String, dynamic> toJson() {
@@ -39,6 +39,6 @@ class PatientModel extends Patient {
       'lastName': lastName,
       'room': room,
       'bed': bed
-      };
+    };
   }
 }
