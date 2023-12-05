@@ -1,59 +1,60 @@
-// import 'package:posts_app/features/posts/domain/repositories/post_repository.dart';
-// import 'package:posts_app/features/posts/presentation/bloc/add_update_delete_post/add_update_delete_post_bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:mobile_front_end/features/patients/data/datasources/patient_local_data_source.dart';
+import 'package:mobile_front_end/features/patients/data/datasources/patient_remote_data_source.dart';
+import 'package:mobile_front_end/features/patients/data/repositories/patient_repository_impl.dart';
+import 'package:mobile_front_end/features/patients/domain/repositories/patients_repository.dart';
+import 'package:mobile_front_end/features/patients/presentation/bloc/add_delete_update_patient/add_delete_update_patient_bloc.dart';
+import 'package:mobile_front_end/features/patients/presentation/bloc/patients/patients_bloc.dart';
 
-// import 'core/network/network_info.dart';
-// import 'features/posts/data/datasources/post_local_data_source.dart';
-// import 'features/posts/data/datasources/post_remote_data_source.dart';
-// import 'features/posts/data/repositories/post_repository_impl.dart';
+import 'core/network/network_info.dart';
 
-// import 'features/posts/domain/usecases/add_post.dart';
-// import 'features/posts/domain/usecases/delete_post.dart';
-// import 'features/posts/domain/usecases/get_all_posts.dart';
-// import 'features/posts/domain/usecases/update_post.dart';
-// import 'features/posts/presentation/bloc/posts/posts_bloc.dart';
-// import 'package:get_it/get_it.dart';
-// import 'package:http/http.dart' as http;
-// import 'package:internet_connection_checker/internet_connection_checker.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
+import 'features/patients/domain/usecases/add_patient.dart';
+import 'features/patients/domain/usecases/delete_patient.dart';
+import 'features/patients/domain/usecases/get_all_patients.dart';
+import 'features/patients/domain/usecases/update_patient.dart';
+import 'package:get_it/get_it.dart';
+import 'package:http/http.dart' as http;
+import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-// final sl = GetIt.instance;
+final sl = GetIt.instance;
 
-// Future<void> init() async {
-// //! Features - posts
+Future<void> init() async {
+//! Features - patients
 
-// // Bloc
+// Bloc
 
-//   sl.registerFactory(() => PostsBloc(getAllPosts: sl()));
-//   sl.registerFactory(() => AddUpdateDeletePostBloc(
-//       addPost: sl(), updatePost: sl(), deletePost: sl()));
+  sl.registerFactory(() => PatientsBloc(getAllPatients: sl()));
+  sl.registerFactory(() => AddDeleteUpdatePatientBloc(
+      addPatient: sl(), updatePatient: sl(), deletePatient: sl()));
 
-// // Usecases
+// Usecases
 
-//   sl.registerLazySingleton(() => GetAllPostsUsecase(sl()));
-//   sl.registerLazySingleton(() => AddPostUsecase(sl()));
-//   sl.registerLazySingleton(() => DeletePostUsecase(sl()));
-//   sl.registerLazySingleton(() => UpdatePostUsecase(sl()));
+  sl.registerLazySingleton(() => GetAllPatientsUsecase(sl()));
+  sl.registerLazySingleton(() => AddPatientUsecase(sl()));
+  sl.registerLazySingleton(() => DeletePatientUsecase(sl()));
+  sl.registerLazySingleton(() => UpdatePatientUsecase(sl()));
 
-// // Repository
+// Repository
 
-//   sl.registerLazySingleton<PostsRepository>(() => PostsRepositoryImpl(
-//       remoteDataSource: sl(), localDataSource: sl(), networkInfo: sl()));
+  sl.registerLazySingleton<PatientRepository>(() => PatientRepositoryImpl(
+      remoteDataSource: sl(), localDataSource: sl(), networkInfo: sl()));
 
-// // Datasources
+// Datasources
 
-//   sl.registerLazySingleton<PostRemoteDataSource>(
-//       () => PostRemoteDataSourceImpl(client: sl()));
-//   sl.registerLazySingleton<PostLocalDataSource>(
-//       () => PostLocalDataSourceImpl(sharedPreferences: sl()));
+  sl.registerLazySingleton<PatientRemoteDataSource>(
+      () => PatientRemoteDataSourceImpl(patientCollection: FirebaseFirestore.instance.collection('patient')));
+  sl.registerLazySingleton<PatientLocalDataSource>(
+      () => PatientLocalDataSourceImpl(sharedPreferences: sl()));
 
-// //! Core
+//! Core
 
-//   sl.registerLazySingleton<networkInfo>(() => NetworkInfoImpl(sl()));
+  sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(sl()));
 
-// //! External
+//! External
 
-//   final sharedPreferences = await SharedPreferences.getInstance();
-//   sl.registerLazySingleton(() => sharedPreferences);
-//   sl.registerLazySingleton(() => http.Client());
-//   sl.registerLazySingleton(() => InternetConnectionChecker());
-// }
+  final sharedPreferences = await SharedPreferences.getInstance();
+  sl.registerLazySingleton(() => sharedPreferences);
+  sl.registerLazySingleton(() => http.Client());
+  sl.registerLazySingleton(() => InternetConnectionChecker());
+}

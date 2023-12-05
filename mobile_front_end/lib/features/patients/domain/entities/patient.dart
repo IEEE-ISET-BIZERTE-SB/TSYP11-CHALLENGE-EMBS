@@ -1,13 +1,14 @@
 import 'package:equatable/equatable.dart';
 
 class Patient extends Equatable {
-  final int? id;
+  
+  final String? id;
   final String matricule;
   final String firstName;
   final String lastName;
   final String room;
   final String bed;
-  final String? photo;
+  // final String? photo;
 
   const Patient({
     this.id, 
@@ -15,10 +16,9 @@ class Patient extends Equatable {
     required this.firstName, 
     required this.lastName, 
     required this.room,
-    required this.bed,
-    this.photo = "/public/images/defaultProfile.png"
+    required this.bed
     });
 
   @override
-  List<Object?> get props => [id, matricule, firstName, lastName, room, bed];
+  List<Object?> get props => [id, matricule, firstName, lastName];
 }
