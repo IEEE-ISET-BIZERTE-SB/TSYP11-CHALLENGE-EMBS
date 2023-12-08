@@ -16,15 +16,9 @@ class DeletePatientBtnWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton.icon(
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(
-          Colors.redAccent,
-        ),
-      ),
+    return IconButton(
       onPressed: () => deleteDialog(context, patientId),
       icon: Icon(Icons.delete_outline),
-      label: Text("Delete"),
     );
   }
 
