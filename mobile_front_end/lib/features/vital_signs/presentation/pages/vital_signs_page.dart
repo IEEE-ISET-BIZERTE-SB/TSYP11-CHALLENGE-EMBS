@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_front_end/core/widgets/loading_widget.dart';
+import 'package:mobile_front_end/features/patients/domain/entities/patient.dart';
 import 'package:mobile_front_end/features/patients/presentation/widgets/patients_page/message_display_widget.dart';
 import 'package:mobile_front_end/features/vital_signs/presentation/bloc/vital_signs/vital_signs_bloc.dart';
 import 'package:mobile_front_end/features/vital_signs/presentation/widgets/vital_signs_page/vital_signs_list_widget.dart';
 
 class VitalSignsPage extends StatelessWidget {
-  VitalSignsPage({Key? key}) : super(key: key);
+  final Patient patient;
+  VitalSignsPage({Key? key, required this.patient}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

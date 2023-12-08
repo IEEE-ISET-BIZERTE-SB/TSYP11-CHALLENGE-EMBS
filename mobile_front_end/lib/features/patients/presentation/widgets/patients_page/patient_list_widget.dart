@@ -18,9 +18,10 @@ class PatientListWidget extends StatelessWidget {
       itemBuilder: (context, index) {
         return Container(
           decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5),
             border: Border.all(
               color: Colors.grey, // Set your border color
-              width: 1.0,          // Set your border width
+              width: 1.0,  
             ),
           ),
           child: ListTile(
@@ -78,8 +79,8 @@ class PatientListWidget extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => VitalSignsPage()
-                  // PatientDetailPage(patient: patients[index]),
+                  builder: (_) => 
+                  PatientDetailPage(patient: patients[index])
                 ),
               );
             },
