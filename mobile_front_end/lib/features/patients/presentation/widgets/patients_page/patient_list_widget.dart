@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_front_end/features/patients/domain/entities/patient.dart';
 import 'package:mobile_front_end/features/patients/presentation/pages/patient_detail_page.dart';
+import 'package:mobile_front_end/features/vital_signs/presentation/pages/vital_signs_page.dart';
 
 class PatientListWidget extends StatelessWidget {
   final List<Patient> patients;
@@ -77,7 +78,8 @@ class PatientListWidget extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => PatientDetailPage(patient: patients[index]),
+                  builder: (_) => VitalSignsPage()
+                  // PatientDetailPage(patient: patients[index]),
                 ),
               );
             },
