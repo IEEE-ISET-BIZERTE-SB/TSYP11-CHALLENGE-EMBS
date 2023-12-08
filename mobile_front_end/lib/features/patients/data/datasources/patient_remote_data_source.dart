@@ -26,7 +26,6 @@ final CollectionReference patientCollection;
         return data;
       }).toList();
         
-      print(allData);
       final List<PatientModel> patientModels = allData
       .map<PatientModel>((jsonPostModel) => PatientModel.fromJson(jsonPostModel))
       .toList();
