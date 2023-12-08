@@ -3,7 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mobile_front_end/core/screens/home.dart';
+import 'package:mobile_front_end/core/screens/starter_widget.dart';
 import 'package:mobile_front_end/features/patients/presentation/bloc/add_delete_update_patient/add_delete_update_patient_bloc.dart';
 import 'package:mobile_front_end/features/patients/presentation/bloc/patients/patients_bloc.dart';
 import 'package:mobile_front_end/features/patients/presentation/pages/Patients_page.dart';
@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: appTheme,
-        home: HomeWidget(),
+        home: StarterWidget(),
         // routes: [
         //   "/patientsPage": Navigator(() => PatientsPage()),
         // ]
