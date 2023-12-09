@@ -6,3 +6,6 @@ class OfflineException implements Exception {}
 
 class WrongDataException implements Exception {}
 
+class LoginException implements Exception {}
+
+class LogoutException implements Exception {}
