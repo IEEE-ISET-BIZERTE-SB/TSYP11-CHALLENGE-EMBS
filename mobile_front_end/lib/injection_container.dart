@@ -1,4 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:mobile_front_end/features/auth/data/datasources/user_local_data_source.dart';
+import 'package:mobile_front_end/features/auth/data/datasources/user_remote_data_source.dart';
+import 'package:mobile_front_end/features/auth/data/repositories/UserRepositoryImpl.dart';
+import 'package:mobile_front_end/features/auth/domain/repositories/userRepository.dart';
+import 'package:mobile_front_end/features/auth/domain/usecases/get_cached_user_use_case.dart';
+import 'package:mobile_front_end/features/auth/domain/usecases/sign_in_user_use_case.dart';
+import 'package:mobile_front_end/features/auth/domain/usecases/sign_out_user_use_case.dart';
+import 'package:mobile_front_end/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:mobile_front_end/features/patients/data/datasources/patient_local_data_source.dart';
 import 'package:mobile_front_end/features/patients/data/datasources/patient_remote_data_source.dart';
 import 'package:mobile_front_end/features/patients/data/repositories/patient_repository_impl.dart';
@@ -42,8 +50,9 @@ Future<void> init() async {
 
 // Datasources
 
-  sl.registerLazySingleton<PatientRemoteDataSource>(
-      () => PatientRemoteDataSourceImpl(patientCollection: FirebaseFirestore.instance.collection('patient')));
+  sl.registerLazySingleton<PatientRemoteDataSource>(() =>
+      PatientRemoteDataSourceImpl(
+          patientCollection: FirebaseFirestore.instance.collection('patient')));
   sl.registerLazySingleton<PatientLocalDataSource>(
       () => PatientLocalDataSourceImpl(sharedPreferences: sl()));
 
@@ -57,4 +66,21 @@ Future<void> init() async {
   sl.registerLazySingleton(() => sharedPreferences);
   sl.registerLazySingleton(() => http.Client());
   sl.registerLazySingleton(() => InternetConnectionChecker());
+  sl.registerLazySingleton(
+      () => AuthBloc(signInUserUseCase: sl(), signOutUserUseCase: sl()));
+
+  sl.registerLazySingleton(() => SignInUserUseCase(sl()));
+  sl.registerLazySingleton(() => SignOutUserUseCase(sl()));
+  sl.registerLazySingleton(() => GetCachedUserUseCase(sl()));
+
+  sl.registerLazySingleton<UserRepository>(() => UserRepositoryImpl(
+      userLocalDataSource: sl(),
+      userRemoteDataSource: sl(),
+      networtkInfo: sl()));
+
+  // Datasources
+  sl.registerLazySingleton<UserRemoteDataSource>(
+      () => UserRemoteDataSourceImpl(client: sl()));
+  sl.registerLazySingleton<UserLocalDataSource>(
+      () => UserLocalDataSourceImpl(sharedPreferences: sl()));
 }

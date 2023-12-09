@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobile_front_end/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:mobile_front_end/features/auth/presentation/pages/login_page.dart';
 import 'package:mobile_front_end/features/patients/presentation/bloc/add_delete_update_patient/add_delete_update_patient_bloc.dart';
 import 'package:mobile_front_end/features/patients/presentation/bloc/patients/patients_bloc.dart';
 import 'package:mobile_front_end/features/patients/presentation/pages/Patients_page.dart';
@@ -14,8 +16,9 @@ void main() async {
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.android,
-);
-  FirebaseFirestore.instance.settings = const Settings(persistenceEnabled: true);
+  );
+  FirebaseFirestore.instance.settings =
+      const Settings(persistenceEnabled: true);
 
   await di.init();
 
@@ -29,14 +32,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => di.sl<PatientsBloc>()..add(GetAllPatientsEvent())),
+        BlocProvider(
+          create: (_) => di.sl<AuthBloc>(),
+        ),
+        BlocProvider(
+            create: (_) => di.sl<PatientsBloc>()..add(GetAllPatientsEvent())),
         BlocProvider(create: (_) => di.sl<AddDeleteUpdatePatientBloc>())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Bonjour',
         theme: appTheme,
-        home: PatientsPage(),
+        home: const LoginPage(),
       ),
     );
   }
