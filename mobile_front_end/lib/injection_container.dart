@@ -13,7 +13,11 @@ import 'package:mobile_front_end/features/patients/data/repositories/patient_rep
 import 'package:mobile_front_end/features/patients/domain/repositories/patients_repository.dart';
 import 'package:mobile_front_end/features/patients/presentation/bloc/add_delete_update_patient/add_delete_update_patient_bloc.dart';
 import 'package:mobile_front_end/features/patients/presentation/bloc/patients/patients_bloc.dart';
-
+import 'package:mobile_front_end/features/vital_signs/data/datasources/vital_signs_remote_data_source.dart';
+import 'package:mobile_front_end/features/vital_signs/data/repositories/vital_signs_repository_impl.dart';
+import 'package:mobile_front_end/features/vital_signs/domain/repositories/vital_signs_repository.dart';
+import 'package:mobile_front_end/features/vital_signs/domain/usecases/get_all_vital_signs_by_patient.dart';
+import 'package:mobile_front_end/features/vital_signs/presentation/bloc/vital_signs/vital_signs_bloc.dart';
 import 'core/network/network_info.dart';
 
 import 'features/patients/domain/usecases/add_patient.dart';
@@ -33,12 +37,14 @@ Future<void> init() async {
 // Bloc
 
   sl.registerFactory(() => PatientsBloc(getAllPatients: sl()));
+  sl.registerFactory(() => VitalSignsBloc(getAllVitalSignsByPatient: sl()));
   sl.registerFactory(() => AddDeleteUpdatePatientBloc(
       addPatient: sl(), updatePatient: sl(), deletePatient: sl()));
 
 // Usecases
 
   sl.registerLazySingleton(() => GetAllPatientsUsecase(sl()));
+  sl.registerLazySingleton(() => GetAllVitalSignsByPatientUsecase(sl()));
   sl.registerLazySingleton(() => AddPatientUsecase(sl()));
   sl.registerLazySingleton(() => DeletePatientUsecase(sl()));
   sl.registerLazySingleton(() => UpdatePatientUsecase(sl()));
@@ -47,6 +53,8 @@ Future<void> init() async {
 
   sl.registerLazySingleton<PatientRepository>(() => PatientRepositoryImpl(
       remoteDataSource: sl(), localDataSource: sl(), networkInfo: sl()));
+  sl.registerLazySingleton<VitalSignsRepository>(() => VitalSignsRepositoryImpl(
+      remoteDataSource: sl(), networkInfo: sl()));
 
 // Datasources
 
@@ -56,6 +64,9 @@ Future<void> init() async {
   sl.registerLazySingleton<PatientLocalDataSource>(
       () => PatientLocalDataSourceImpl(sharedPreferences: sl()));
 
+  sl.registerLazySingleton<VitalSignsRemoteDataSource>(
+      () => VitalSignsRemoteDataSourceImpl(vitalSignsCollection: FirebaseFirestore.instance.collection('vitalSigns')));
+ 
 //! Core
 
   sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(sl()));

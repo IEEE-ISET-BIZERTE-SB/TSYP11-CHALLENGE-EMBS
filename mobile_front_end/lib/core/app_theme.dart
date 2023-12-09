@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-final primaryColor = Colors.blueAccent;
+final primaryColor = Colors.blue;
 final secondaryColor = const Color(0xff51eec2);
 
 final appTheme = ThemeData(
