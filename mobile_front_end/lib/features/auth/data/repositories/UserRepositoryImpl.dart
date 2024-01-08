@@ -9,18 +9,18 @@ import 'package:mobile_front_end/features/auth/domain/entities/userEntity.dart';
 import 'package:mobile_front_end/features/auth/domain/repositories/userRepository.dart';
 
 class UserRepositoryImpl extends UserRepository {
-  final NetworkInfo networtkInfo;
+  final NetworkInfo networkInfo;
   final UserLocalDataSource userLocalDataSource;
   final UserRemoteDataSource userRemoteDataSource;
   UserRepositoryImpl(
-      {required this.networtkInfo,
+      {required this.networkInfo,
       required this.userLocalDataSource,
       required this.userRemoteDataSource});
   @override
   Future<Either<Failure, Unit>> signIn(UserEntity user) async {
     final UserModel userModel =
         UserModel(username: user.username, password: user.password);
-    if (await networtkInfo.isConnected) {
+    if (await networkInfo.isConnected) {
       try {
         final remoteUser = await userRemoteDataSource.signInUser(userModel);
         userLocalDataSource.cacheUser(remoteUser);
@@ -35,8 +35,13 @@ class UserRepositoryImpl extends UserRepository {
 
   @override
   Future<Either<Failure, Unit>> signOut() async {
-    userLocalDataSource.clearCachedUser();
-    return const Right(unit);
+    try {
+      await userRemoteDataSource.signOutUser();
+      userLocalDataSource.clearCachedUser();
+      return const Right(unit);
+    } catch (e) {
+      return Left(SignOutFailure());
+    }
   }
 
   @override
@@ -53,5 +58,11 @@ class UserRepositoryImpl extends UserRepository {
     } catch (e) {
       return null;
     }
+  }
+
+  @override
+  Future<UserModel> signUp(String email, String password) {
+    // TODO: implement signUp
+    throw UnimplementedError();
   }
 }
