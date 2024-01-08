@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mobile_front_end/features/auth/data/datasources/user_local_data_source.dart';
 import 'package:mobile_front_end/features/auth/data/datasources/user_remote_data_source.dart';
+import 'package:mobile_front_end/features/auth/data/models/userModel.dart';
 import 'package:mobile_front_end/features/auth/data/repositories/UserRepositoryImpl.dart';
 import 'package:mobile_front_end/features/auth/domain/repositories/userRepository.dart';
 import 'package:mobile_front_end/features/auth/domain/usecases/get_cached_user_use_case.dart';
@@ -19,7 +20,7 @@ import 'package:mobile_front_end/features/vital_signs/domain/repositories/vital_
 import 'package:mobile_front_end/features/vital_signs/domain/usecases/get_all_vital_signs_by_patient.dart';
 import 'package:mobile_front_end/features/vital_signs/presentation/bloc/vital_signs/vital_signs_bloc.dart';
 import 'core/network/network_info.dart';
-
+import 'package:http/http.dart' as http;
 import 'features/patients/domain/usecases/add_patient.dart';
 import 'features/patients/domain/usecases/delete_patient.dart';
 import 'features/patients/domain/usecases/get_all_patients.dart';
@@ -53,8 +54,8 @@ Future<void> init() async {
 
   sl.registerLazySingleton<PatientRepository>(() => PatientRepositoryImpl(
       remoteDataSource: sl(), localDataSource: sl(), networkInfo: sl()));
-  sl.registerLazySingleton<VitalSignsRepository>(() => VitalSignsRepositoryImpl(
-      remoteDataSource: sl(), networkInfo: sl()));
+  sl.registerLazySingleton<VitalSignsRepository>(() =>
+      VitalSignsRepositoryImpl(remoteDataSource: sl(), networkInfo: sl()));
 
 // Datasources
 
@@ -64,9 +65,11 @@ Future<void> init() async {
   sl.registerLazySingleton<PatientLocalDataSource>(
       () => PatientLocalDataSourceImpl(sharedPreferences: sl()));
 
-  sl.registerLazySingleton<VitalSignsRemoteDataSource>(
-      () => VitalSignsRemoteDataSourceImpl(vitalSignsCollection: FirebaseFirestore.instance.collection('vitalSigns')));
- 
+  sl.registerLazySingleton<VitalSignsRemoteDataSource>(() =>
+      VitalSignsRemoteDataSourceImpl(
+          vitalSignsCollection:
+              FirebaseFirestore.instance.collection('vitalSigns')));
+
 //! Core
 
   sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(sl()));
@@ -87,11 +90,12 @@ Future<void> init() async {
   sl.registerLazySingleton<UserRepository>(() => UserRepositoryImpl(
       userLocalDataSource: sl(),
       userRemoteDataSource: sl(),
-      networtkInfo: sl()));
+      networkInfo: sl()));
 
   // Datasources
   sl.registerLazySingleton<UserRemoteDataSource>(
       () => UserRemoteDataSourceImpl(client: sl()));
+
   sl.registerLazySingleton<UserLocalDataSource>(
       () => UserLocalDataSourceImpl(sharedPreferences: sl()));
 }
