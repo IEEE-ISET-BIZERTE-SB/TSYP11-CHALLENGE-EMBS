@@ -12,49 +12,42 @@ class StarterWidget extends StatefulWidget {
 }
 
 class _StarterWidgetState extends State<StarterWidget> {
-
-   int _selectedIndex = 0;
+  int _selectedIndex = 0;
 
   void _navigateBottomBar(int index) {
     setState(() {
-      _selectedIndex = index; 
-    }
-    );
+      _selectedIndex = index;
+    });
   }
+
   final List _pages = [
     HomePage(),
     PatientsPage(),
-    PatientsPage(),
-    
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-          body: _pages[_selectedIndex],
-          bottomNavigationBar: BottomNavigationBar(
-            currentIndex: _selectedIndex,
-            onTap: _navigateBottomBar,
-            items: [
-              BottomNavigationBarItem(
-                backgroundColor: Colors.blue,
-                icon: Icon(Icons.home),
-                label: 'Home',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.sick),
-                label: 'Patients'
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.account_box),
-                label: 'Profile'
-              ),
-              // BottomNavigationBarItem(
-              //   icon: Icon(Icons.settings),
-              //   label: 'Settings'
-              // ),
-            ]
-          ),
-        );
+      body: _pages[_selectedIndex],
+      bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _selectedIndex,
+          onTap: _navigateBottomBar,
+          items: [
+            BottomNavigationBarItem(
+              backgroundColor: Colors.blue,
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(icon: Icon(Icons.sick), label: 'Patients'),
+            // BottomNavigationBarItem(
+            //   icon: Icon(Icons.account_box),
+            //   label: 'Profile'
+            // ),
+            // BottomNavigationBarItem(
+            //   icon: Icon(Icons.settings),
+            //   label: 'Settings'
+            // ),
+          ]),
+    );
   }
 }
