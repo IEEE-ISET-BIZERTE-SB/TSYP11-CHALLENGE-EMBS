@@ -12,51 +12,57 @@ import '../widgets/patient_add_update_page/form_widget.dart';
 class PatientAddUpdatePage extends StatelessWidget {
   final Patient? patient;
   final bool isUpdatePatient;
-  const PatientAddUpdatePage({Key? key, 
-    this.patient, 
-    required this.isUpdatePatient
-    })
+
+  const PatientAddUpdatePage(
+      {Key? key, this.patient, required this.isUpdatePatient})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _buildAppbar(),
-      body: _buildBody(),
+      appBar: _buildAppBar(),
+      body: _buildBody(context),
     );
   }
 
-  AppBar _buildAppbar() {
-    return AppBar(title: Text(isUpdatePatient ? "Edit Patient" : "Add Patient"));
+  AppBar _buildAppBar() {
+    return AppBar(
+        title: Text(isUpdatePatient ? "Edit Patient" : "Add Patient"));
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(BuildContext context) {
     return Center(
       child: Padding(
-          padding: EdgeInsets.all(2),
-          child:
-              BlocConsumer<AddDeleteUpdatePatientBloc, AddDeleteUpdatePatientState>(
-            listener: (context, state) {
-              if (state is MessageAddDeleteUpdatePatientState) {
-                SnackBarMessage().showSuccessSnackBar(
-                    message: state.message, context: context);
-                Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (_) => PatientsPage()),
-                    (route) => false);
-              } else if (state is ErrorAddDeleteUpdatePatientState) {
-                SnackBarMessage().showErrorSnackBar(
-                    message: state.message, context: context);
-              }
-            },
-            builder: (context, state) {
-              if (state is LoadingAddDeleteUpdatePatientState) {
-                return LoadingWidget();
-              }
+        padding: EdgeInsets.all(2),
+        child: BlocConsumer<AddDeleteUpdatePatientBloc,
+            AddDeleteUpdatePatientState>(
+          listener: (context, state) {
+            if (state is MessageAddDeleteUpdatePatientState) {
+              SnackBarMessage().showSuccessSnackBar(
+                message: state.message,
+                context: context,
+              );
+              // Navigate back to PatientsPage after adding/updating a patient
+              Navigator.of(context).pop();
+            } else if (state is ErrorAddDeleteUpdatePatientState) {
+              SnackBarMessage().showErrorSnackBar(
+                message: state.message,
+                context: context,
+              );
+            }
+          },
+          builder: (context, state) {
+            if (state is LoadingAddDeleteUpdatePatientState) {
+              return LoadingWidget();
+            }
 
-              return FormWidget(
-                  isUpdatePatient: isUpdatePatient, patient: isUpdatePatient ? patient : null);
-            },
-          )),
+            return FormWidget(
+              isUpdatePatient: isUpdatePatient,
+              patient: isUpdatePatient ? patient : null,
+            );
+          },
+        ),
+      ),
     );
   }
 }
