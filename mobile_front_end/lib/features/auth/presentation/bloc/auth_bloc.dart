@@ -18,8 +18,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         failedOrDoneLogin.fold((left) {
           emit(AuthErrorState(message: _mapLoginFailureToMessage(left)));
           emit(UnAuthenticatedState());
-//envoyer plusieurs états
-//c pas une regle le fait d'envoyer un seul etat par event
         }, (right) {
           emit(AuthenticatedState(message: "authenticated"));
         });
