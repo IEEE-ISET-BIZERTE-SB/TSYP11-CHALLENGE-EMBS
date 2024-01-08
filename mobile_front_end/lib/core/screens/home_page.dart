@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_front_end/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:mobile_front_end/features/auth/presentation/bloc/auth_event.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobile_front_end/features/auth/presentation/bloc/auth_state.dart';
+import 'package:mobile_front_end/features/auth/presentation/pages/login_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key});
@@ -14,14 +19,27 @@ class HomePage extends StatelessWidget {
               height: 40,
             ),
             SizedBox(width: 8),
-            Text('PULSEPAL'),
+            Text('MedPocket'),
           ],
         ),
         actions: [
-          IconButton(
-            icon: Icon(Icons.notifications),
-            onPressed: () {
-              // Handle notifications button press
+          BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, state) {
+              return IconButton(
+                icon: Icon(Icons.logout),
+                onPressed: () {
+                  if (state is AuthenticatedState) {
+                    BlocProvider.of<AuthBloc>(context).add(LogOutEvent());
+                  } else {
+                    // Navigate to login page if the user is unauthenticated
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const LoginPage()),
+                    );
+                  }
+                },
+              );
             },
           ),
         ],
