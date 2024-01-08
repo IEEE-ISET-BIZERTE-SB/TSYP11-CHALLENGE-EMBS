@@ -7,6 +7,7 @@ final appTheme = ThemeData(
     appBarTheme: AppBarTheme(
       backgroundColor: primaryColor,
       centerTitle: true,
+      elevation: 0
     ),
     brightness: Brightness.light,
     primaryColor: primaryColor,

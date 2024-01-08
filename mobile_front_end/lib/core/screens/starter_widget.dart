@@ -23,7 +23,9 @@ class _StarterWidgetState extends State<StarterWidget> {
   }
   final List _pages = [
     HomePage(),
-    PatientsPage()
+    PatientsPage(),
+    PatientsPage(),
+    
   ];
 
   @override
@@ -43,10 +45,10 @@ class _StarterWidgetState extends State<StarterWidget> {
                 icon: Icon(Icons.sick),
                 label: 'Patients'
               ),
-              // BottomNavigationBarItem(
-              //   icon: Icon(Icons.account_box),
-              //   label: 'Profile'
-              // ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.account_box),
+                label: 'Profile'
+              ),
               // BottomNavigationBarItem(
               //   icon: Icon(Icons.settings),
               //   label: 'Settings'
