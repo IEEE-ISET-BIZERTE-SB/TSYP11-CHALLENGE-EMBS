@@ -6,8 +6,16 @@ import 'package:mobile_front_end/features/patients/presentation/pages/Patient_ad
 import 'package:mobile_front_end/features/patients/presentation/widgets/patients_page/message_display_widget.dart';
 import 'package:mobile_front_end/features/patients/presentation/widgets/patients_page/patient_list_widget.dart';
 
-class PatientsPage extends StatelessWidget {
+class PatientsPage extends StatefulWidget {
   PatientsPage({Key? key}) : super(key: key);
+
+  @override
+  _PatientsPageState createState() => _PatientsPageState();
+}
+
+class _PatientsPageState extends State<PatientsPage> {
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      GlobalKey<RefreshIndicatorState>();
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +36,9 @@ class PatientsPage extends StatelessWidget {
                 MaterialPageRoute(
                   builder: (_) => PatientAddUpdatePage(isUpdatePatient: false),
                 ),
-              );
+              ).then((value) {
+                _refreshIndicatorKey.currentState?.show();
+              });
             },
           ),
         ],
@@ -37,20 +47,21 @@ class PatientsPage extends StatelessWidget {
   Widget _buildBody() {
     return Padding(
       padding: EdgeInsets.all(10),
-      child: BlocBuilder<PatientsBloc, PatientsState>(
-        builder: (context, state) {
-          if (state is LoadingPatientsState) {
+      child: RefreshIndicator(
+        key: _refreshIndicatorKey,
+        onRefresh: () => _onRefresh(context),
+        child: BlocBuilder<PatientsBloc, PatientsState>(
+          builder: (context, state) {
+            if (state is LoadingPatientsState) {
+              return LoadingWidget();
+            } else if (state is LoadedPatientsState) {
+              return PatientListWidget(patients: state.patients);
+            } else if (state is ErrorPatientsState) {
+              return MessageDisplayWidget(message: state.message);
+            }
             return LoadingWidget();
-          } else if (state is LoadedPatientsState) {
-            return RefreshIndicator(
-              onRefresh: () => _onRefresh(context),
-              child: PatientListWidget(patients: state.patients),
-            );
-          } else if (state is ErrorPatientsState) {
-            return MessageDisplayWidget(message: state.message);
-          }
-          return LoadingWidget();
-        },
+          },
+        ),
       ),
     );
   }
