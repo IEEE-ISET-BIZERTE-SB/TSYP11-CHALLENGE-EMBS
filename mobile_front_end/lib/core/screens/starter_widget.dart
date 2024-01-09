@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:flutter/material.dart';
 import 'package:mobile_front_end/core/screens/home_page.dart';
 import 'package:mobile_front_end/features/patients/presentation/pages/Patients_page.dart';
