@@ -1,4 +1,5 @@
 name: mobile_front_end
+flutter_launcher_name: "medPocket"
 description: patient monitoring system .
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -53,17 +54,17 @@ dev_dependencies:
 flutter_native_splash:
   color: "#FFFFFF"
   color_dark: "#272727"
-  image: assets\images\logo.png
+  image: assets/images/logo.png
 
   android_12:
     color: "#FFFFFF"
     color_dark: "#272727"
-    image: assets\images\logo.png
+    image: assets/images/logo.png
   
 flutter_launcher_icons: 
   android: true
   ios: true
-  image_path: assets\images\logo.png
+  image_path: assets/images/logo.png
  
 
 # For information on the generic Dart part of this file, see the
